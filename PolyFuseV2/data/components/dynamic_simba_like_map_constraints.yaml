@@ -1,0 +1,34 @@
+mapspace_constraints:
+  targets:
+  - target: GlobalBuffer
+    type: temporal
+    factors: R=1 S=1
+    permutation: RSCMN
+  - target: DRAM
+    type: temporal
+    factors: R=1 S=1
+    permutation: RSCMN
+  - target: GlobalBuffer
+    type: spatial
+    factors: P=1 Q=1 R=1 S=1 N=1 C=1 M=16
+    permutation: PQRSCNM
+  - target: PEAccuBuffer
+    type: spatial
+    factors: P=1 Q=1 R=1 S=1 N=1 M=1 C=3
+    permutation: PQRSCNM
+  - target: PEWeightRegs
+    type: temporal
+    factors: R=1 S=1 C=1 M=1 N=1
+    permutation: RSCMN
+  - target: PEInputBuffer
+    type: temporal
+    factors: P=1 Q=1 R=1 S=1 C=1 M=1 N=1
+    permutation: PQRSCMN
+  - target: PEAccuBuffer
+    type: temporal
+    factors: P=1 Q=1 R=1 S=1 C=1 N=1
+    permutation: PQRSCN
+  - target: PEWeightBuffer
+    type: temporal
+    factors: P=1 Q=1 M=1 N=1
+    permutation: PQMN

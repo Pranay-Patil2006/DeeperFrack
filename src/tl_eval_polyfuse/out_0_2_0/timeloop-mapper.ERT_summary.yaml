@@ -1,0 +1,115 @@
+ERT_summary:
+    version: '0.4'
+    table_summary:
+      - name: System.ws.PE[0..15].PEInputBuffer
+        actions:
+          - name: write
+            average_energy: 13.6112
+            max_energy: 25.2224
+            min_energy: 2.0
+          - name: read
+            average_energy: 7.37405
+            max_energy: 12.7481
+            min_energy: 2.0
+          - name: idle
+            energy: 2.0
+        primitive_estimation(s):
+          - name: storage
+            estimator: CactiSRAM
+          - name: address_generators[0]
+            estimator: dummy
+          - name: address_generators[1]
+            estimator: dummy
+          - name: address_generators[0..1]
+            estimator: dummy
+      - name: System.ws.PE[0..15].PEWeightBuffer[0..7]
+        actions:
+          - name: write
+            average_energy: 9.02621
+            max_energy: 16.0524
+            min_energy: 2.0
+          - name: read
+            average_energy: 5.95818
+            max_energy: 9.91635
+            min_energy: 2.0
+          - name: idle
+            energy: 2.0
+        primitive_estimation(s):
+          - name: storage
+            estimator: CactiSRAM
+          - name: address_generators[0]
+            estimator: dummy
+          - name: address_generators[1]
+            estimator: dummy
+          - name: address_generators[0..1]
+            estimator: dummy
+      - name: System.ws.PE[0..15].PEAccuBuffer[0..7]
+        actions:
+          - name: write
+            average_energy: 3.1404
+            max_energy: 4.2808
+            min_energy: 2.0
+          - name: read
+            average_energy: 2.70683
+            max_energy: 3.41365
+            min_energy: 2.0
+          - name: idle
+            energy: 2.0
+        primitive_estimation(s):
+          - name: storage
+            estimator: CactiSRAM
+          - name: address_generators[0]
+            estimator: dummy
+          - name: address_generators[1]
+            estimator: dummy
+          - name: address_generators[0..1]
+            estimator: dummy
+      - name: System.ws.PE[0..15].PEWeightRegs[0..63]
+        actions:
+          - name: write
+            average_energy: 2.02155
+            max_energy: 2.04311
+            min_energy: 2.0
+          - name: read
+            average_energy: 2.0131
+            max_energy: 2.0262
+            min_energy: 2.0
+          - name: idle
+            energy: 2.0
+        primitive_estimation(s):
+          - name: storage
+            estimator: CactiSRAM
+          - name: address_generators[0]
+            estimator: dummy
+          - name: address_generators[1]
+            estimator: dummy
+          - name: address_generators[0..1]
+            estimator: dummy
+      - name: System.ws.PE[0..15].LMAC[0..63]
+        actions:
+          - name: compute
+            energy: 1.0
+        primitive_estimation(s):
+          - name: intmac
+            estimator: dummy
+      - name: System.ws.GlobalBuffer
+        actions:
+          - name: write
+            average_energy: 101.187
+            max_energy: 200.375
+            min_energy: 2.0
+          - name: read
+            average_energy: 50.8862
+            max_energy: 99.7725
+            min_energy: 2.0
+          - name: idle
+            energy: 2.0
+        primitive_estimation(s):
+          - name: storage
+            estimator: CactiSRAM
+          - name: address_generators[0]
+            estimator: dummy
+          - name: address_generators[1]
+            estimator: dummy
+          - name: address_generators[0..1]
+            estimator: dummy

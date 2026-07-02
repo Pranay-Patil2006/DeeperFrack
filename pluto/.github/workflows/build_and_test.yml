@@ -1,0 +1,61 @@
+name: Build and test Pluto
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+    - '**.gitignore'
+    - '**.md'
+    - '**.png'
+    - '.github/workflows/clang_format.yml'
+  pull_request:
+    branches: [master]
+    paths-ignore:
+    - '**.gitignore'
+    - '**.md'
+    - '**.png'
+    - '.github/workflows/clang_format.yml'
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: self-hosted
+
+    steps:
+      # Clone the repo. Do shallow clone up until depth two to save clone time.
+      - name: Checkout Pluto
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Checkout submodules
+        # Checkout submodule via the command so that we avoid a complete
+        # recursive checkout. We only need the submodules Pluto depends on.
+        run: git submodule update --init --depth 1
+
+      - name: Generate build
+        # Use a bash shell so we can use the same syntax for environment
+        # variable access regardless of the host operating system.
+        shell: bash
+        run: ./autogen.sh
+
+      - name: Configure build
+        # Use a bash shell so we can use the same syntax for environment
+        # variable access regardless of the host operating system.
+        shell: bash
+        run: ./configure --enable-glpk --with-clang-prefix=/usr/lib/llvm-14
+
+      - name: Build
+        working-directory: ${{github.workspace}}
+        shell: bash
+        # Execute the build.
+        run: |
+          # Build pluto and libpluto test binary.
+          make -j 16
+          make test_libpluto
+          make unit_tests
+
+      - name: Test
+        working-directory: ${{github.workspace}}
+        shell: bash
+        # Run the complete test suite.
+        run: make check-pluto

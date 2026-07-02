@@ -1,0 +1,23 @@
+compound_components:
+  version: 0.3
+  classes:
+    - name: lmac
+      attributes:
+        technology: 45nm
+        datawidth: 16
+        latency: 5ns
+        num_pipeline_stages: 2
+      subcomponents:
+        - name: intmac
+          class: intmac
+          attributes:
+            technology: 45nm
+            datawidth: datawidth
+            latency: 5ns
+            num_pipeline_stages: 2
+      actions:
+        - name: compute
+          subcomponents:
+            - name: intmac
+              actions:
+                - name: mac_random

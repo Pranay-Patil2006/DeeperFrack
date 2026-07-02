@@ -1,0 +1,24 @@
+[submodule "isl"]
+	path = isl
+	url = https://github.com/bondhugula/isl-for-pluto.git
+[submodule "cloog-isl"]
+	path = cloog-isl
+	url = https://github.com/bondhugula/cloog.git
+[submodule "piplib"]
+	path = piplib
+	url = https://github.com/periscop/piplib.git
+[submodule "polylib"]
+	path = polylib
+	url =  https://github.com/vincentloechner/polylib.git
+[submodule "candl"]
+	path = candl
+	url = https://github.com/periscop/candl.git
+[submodule "clan"]
+	path = clan
+	url = https://github.com/periscop/clan.git
+[submodule "openscop"]
+	path = openscop
+	url = https://github.com/periscop/openscop.git
+[submodule "pet"]
+	path = pet
+	url = https://github.com/bondhugula/pet-for-pluto.git

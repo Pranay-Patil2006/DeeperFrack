@@ -1,0 +1,9 @@
+problem:
+  shape:
+    data-spaces:
+    - name: Weights
+      projection:
+      - - [C]
+      - - [M]
+      - - [R]
+      - - [S]
