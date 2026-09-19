@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>PolyFuse V2 Presentation</title>
+    <!-- Reveal.js CSS from CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-transform: none;
+        }
+        .reveal p, .reveal li {
+            font-size: 0.85em;
+            text-align: left;
+            line-height: 1.4;
+        }
+        .reveal .alert {
+            background-color: #222;
+            border-left: 5px solid #f39c12;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 0.8em;
+        }
+        .reveal code {
+            color: #e83e8c;
+            background-color: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .reveal pre {
+            background: #222;
+            padding: 15px;
+            font-size: 0.7em;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            width: 100%;
+        }
+        .reveal pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #a6e22e;
+        }
+        .center-text {
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1 -->
+            <section>
+                <h2>PolyFuse V2</h2>
+                <h3>Analytical CNN Layer Fusion Optimizer</h3>
+                <p class="center-text" style="margin-top: 40px;"><strong>The Goal</strong>: Minimizing energy and latency in Deep Neural Network hardware acceleration by optimally fusing CNN layers, without relying on heuristics or expensive search algorithms.</p>
+                <p class="center-text" style="font-style: italic; color: #aaa;">An In-Depth Presentation of the PolyFuse V2 Architecture</p>
+            </section>
+
+            <!-- Slide 2 -->
+            <section>
+                <h2>System Interface & Data Ingestion</h2>
+                <p>PolyFuse V2 operates as a standalone CLI tool that takes Timeloop-format inputs and produces optimized fused-layer schedules with verified results.</p>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Architecture (<code>arch.yaml</code>)</strong>: Defines the full memory hierarchy, PE array dimensions, buffer depths/widths, and NoC topology.</li>
+                    <li style="margin-bottom: 10px;"><strong>Components (<code>components/</code>)</strong>: Defines energy-per-action tables for every hardware primitive.</li>
+                    <li style="margin-bottom: 10px;"><strong>Network (<code>layers/</code>)</strong>: A linear chain of problem YAMLs defining convolution dimensions.</li>
+                </ul>
+                <div class="alert">
+                    <strong>Core Principle:</strong> All hardware parameters must be parsed dynamically. There are no hardcoded hardware constraints.
+                </div>
+            </section>
+
+            <!-- Slide 3 -->
+            <section>
+                <h2>Hardware Abstraction Layer (HAL)</h2>
+                <p>Before optimization begins, the HAL interprets the target architecture:</p>
+                <ul>
+                    <li style="margin-bottom: 15px;"><strong>Buffer Inventory</strong>: Extracts buffer properties at each storage level.</li>
+                    <li style="margin-bottom: 15px;"><strong>Capacity Calculation</strong>: Dynamically computes capacity per bank in words.</li>
+                    <li style="margin-bottom: 15px;"><strong>Buffer Role Assignment</strong>: Determines which buffers hold Inputs, Weights, and Outputs based on the architecture's dataflow constraints.</li>
+                    <li style="margin-bottom: 15px;"><strong>PE Array Geometry</strong>: Extracts spatial bounds (<code>meshX</code>, <code>meshY</code>) to determine the processing grid.</li>
+                </ul>
+            </section>
+
+            <!-- Slide 4 -->
+            <section>
+                <h2>The Three-Stage Core Architecture</h2>
+                <p>PolyFuse V2 is structured into three consecutive analytical stages that guarantee a mathematically valid optimal partition:</p>
+                <ol>
+                    <li style="margin-bottom: 20px;"><strong>Stage 1: Zero-Search Algebraic Tiling</strong><br>Determines mathematically optimal tile sizes without simulation or iterative search.</li>
+                    <li style="margin-bottom: 20px;"><strong>Stage 2: Hardware-Aware Spatial Routing (MIQP)</strong><br>Maps valid layer stacks spatially across the NoC while ensuring data causality.</li>
+                    <li style="margin-bottom: 20px;"><strong>Stage 3: Dynamic Programming (DP) Partitioning</strong><br>Finds the globally optimal partition of the full linear chain into fused stacks.</li>
+                </ol>
+            </section>
+
+            <!-- Slide 5 -->
+            <section>
+                <h2>Stage 1: Zero-Search Algebraic Tiling</h2>
+                <p>Propagates required input footprints backward from the output tile dimension using an exact polyhedral recurrence:</p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <code>T_in^(i) = (T_out^(i) - 1) * S^(i) + R^(i)</code>
+                </div>
+                <h3 style="font-size: 1.2em; text-align: left; margin-top: 30px;">Key Mechanisms:</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Multi-Level Memory</strong>: Solves deeper hierarchies (L2 → L1) using decoupled, cascaded quadratic root-finding to guarantee perfect mathematical nesting.</li>
+                    <li><strong>Complex Topologies</strong>: For networks with skip connections, replaces quadratic formulas with fast Newton-Raphson numeric solvers.</li>
+                </ul>
+            </section>
+
+            <!-- Slide 6 -->
+            <section>
+                <h2>Stage 1: Strict Buffer Constraints</h2>
+                <p>For every layer in a fused stack, <strong>all three</strong> constraints must hold simultaneously:</p>
+                <ul>
+                    <li style="margin-bottom: 15px;"><strong>Input Buffer:</strong><br> <code>[T_in^(i)]^2 * C^(i) <= InputBuffer_capacity</code></li>
+                    <li style="margin-bottom: 15px;"><strong>Output Buffer:</strong><br> <code>[T_out^(i)]^2 * M^(i) <= AccuBuffer_capacity</code></li>
+                    <li style="margin-bottom: 15px;"><strong>Weight Buffer:</strong><br> Uses a greedy knapsack algorithm to pack as many weights as possible. Cumulative weights must never exceed capacity.</li>
+                </ul>
+                <div class="alert">
+                    <strong>CAUTION:</strong> No receptive field truncation! Intermediate tile sizes must never be shrunk to fit. If the footprint exceeds capacity, the fusion is rejected.
+                </div>
+            </section>
+
+            <!-- Slide 7 -->
+            <section>
+                <h2>Stage 2: Hardware-Aware Spatial Routing</h2>
+                <p>Optimizes the physical spatial allocation (X, Y) of operations on the Processing Element (PE) mesh array.</p>
+                <p><strong>Routing Penalty — Convex Quadratic Programming:</strong><br> Minimizes physical NoC hop distances using a convex squared-distance objective.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <code>J = min ∑ [(X2 - X1)^2 + (Y2 - Y1)^2]</code>
+                </div>
+                <p>This formulation penalizes long hops quadratically (a distance of 4 costs 16x) and solves in under 2ms.</p>
+            </section>
+
+            <!-- Slide 8 -->
+            <section>
+                <h2>Stage 2: Causality & Extreme Vectors</h2>
+                <p>Instead of using standard Farkas' Lemma which results in 50,000+ variables, PolyFuse V2 uses the <strong>Extreme Vector Method</strong>.</p>
+                <p>For a 3x3 kernel, causality is enforced only at the 4 geometric corner vectors:</p>
+                <pre><code>Θ2 · x - Θ1 · (x - d_ext) >= 1   ∀ d_ext ∈ {(0,0), (0,2), (2,0), (2,2)}</code></pre>
+                <div class="alert">
+                    <strong>TIP:</strong> This reduces constraints from thousands of variables down to ~4–8 linear equations per layer boundary!
+                </div>
+            </section>
+
+            <!-- Slide 9 -->
+            <section>
+                <h2>Stage 3: Dynamic Programming Partitioner</h2>
+                <p>Runs an <code>O(N^2)</code> pass to find the absolute globally optimal partition of layers.</p>
+                <pre><code>DP[i] = min( DP[j] + EnergyCost(Stack(j, i)) )</code></pre>
+                <h3 style="font-size: 1.2em; text-align: left; margin-top: 30px;">Optimization Objectives:</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Energy</strong>: Minimizes total energy (MAC + SRAM + DRAM)</li>
+                    <li style="margin-bottom: 10px;"><strong>Latency</strong>: Minimizes cycles, using analytical roofline modeling for compute-bound vs memory-bound bottlenecks.</li>
+                    <li><strong>EDP</strong>: Minimizes the Energy-Delay Product (Total Energy × Latency).</li>
+                </ul>
+            </section>
+
+            <!-- Slide 10 -->
+            <section>
+                <h2>Stage 3: Recompute vs. Store</h2>
+                <p>For each fused stack boundary, the algorithm analytically decides whether to recompute the overlapping halo or store it.</p>
+                <pre><code>if (Vol_halo * Cost_MAC) < (Vol_spill * Cost_DRAM):
+    # Recompute (use Index Set Splitting to decouple tiles)
+else:
+    # Store (share halo data sequentially through SRAM)
+                </code></pre>
+                <p style="margin-top: 20px;"><strong>Timeloop Verification</strong>: Finally, PolyFuse V2 invokes <code>timeloop-mapper</code> as a subprocess for candidate blocks, confirming the analytical cost model with exact hardware execution statistics.</p>
+            </section>
+
+            <!-- Slide 11 -->
+            <section>
+                <h2>Prior Works: Known Pitfalls & Resolutions</h2>
+                <p>PolyFuse V2 was built to explicitly avoid bugs present in previous heuristic approaches (e.g., DeepFrack):</p>
+                <ul>
+                    <li style="margin-bottom: 15px;"><strong>The Overwrite Bug</strong>: Previous tools used <code>=</code> to calculate weight footprints, hallucinating they could cache 3.2MB of weights in a 512KB buffer. PolyFuse strictly accumulates sizes with <code>+=</code>.</li>
+                    <li style="margin-bottom: 15px;"><strong>Receptive Field Truncation</strong>: Previous tools silently broke convolution physics by shrinking tile widths until they fit. PolyFuse strictly rejects over-capacity stacks.</li>
+                    <li style="margin-bottom: 15px;"><strong>Buffer Collisions</strong>: PolyFuse treats Spatial Hardware buffers as physically disjoint (Input vs Weight vs Output), never combining them into a single monolithic SRAM inequality.</li>
+                </ul>
+            </section>
+
+            <!-- Slide 12 -->
+            <section>
+                <h2>Validation & Benchmarks</h2>
+                <p>PolyFuse V2 automatically evaluates against the <strong>Naive Baseline</strong> (executing one layer at a time in Single Layer Computation mode).</p>
+                <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                    <div style="width: 48%; background: #222; padding: 20px; border-radius: 8px;">
+                        <h3 style="font-size: 1.1em; color: #fff;">Target Networks</h3>
+                        <ul>
+                            <li>AlexNet & VGG02</li>
+                            <li>MobileNetV2</li>
+                            <li>ResNet-50</li>
+                            <li>EfficientNet-B0</li>
+                        </ul>
+                    </div>
+                    <div style="width: 48%; background: #222; padding: 20px; border-radius: 8px;">
+                        <h3 style="font-size: 1.1em; color: #fff;">Target Architectures</h3>
+                        <ul>
+                            <li>Simba (Weight-Stationary)</li>
+                            <li>Eyeriss (Row-Stationary)</li>
+                            <li>Gemmini (Systolic array)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    
+    <!-- Reveal.js Scripts from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+            transition: 'slide'
+        });
+    </script>
+</body>
+</html>

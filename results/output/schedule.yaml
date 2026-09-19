@@ -1,0 +1,51 @@
+schedule:
+- cost: 2368618140.0
+  routing:
+  - !!python/tuple
+    - 8
+    - 0
+  - !!python/tuple
+    - 8
+    - 0
+  - !!python/tuple
+    - 8
+    - 0
+  - !!python/tuple
+    - 8
+    - 0
+  - !!python/tuple
+    - 8
+    - 0
+  stack:
+  - AlexNet_layer01.yaml
+  - AlexNet_layer02.yaml
+  - AlexNet_layer02New.yaml
+  - AlexNet_layer03.yaml
+  - AlexNet_layer04.yaml
+  tile_sizes:
+    AlexNet_layer01.yaml:
+      T_c: 3
+      T_in: 87
+      T_m: 96
+      T_out: 20
+    AlexNet_layer02.yaml:
+      T_c: 96
+      T_in: 20
+      T_m: 256
+      T_out: 16
+    AlexNet_layer02New.yaml:
+      T_c: 96
+      T_in: 16
+      T_m: 256
+      T_out: 12
+    AlexNet_layer03.yaml:
+      T_c: 256
+      T_in: 12
+      T_m: 384
+      T_out: 10
+    AlexNet_layer04.yaml:
+      T_c: 384
+      T_in: 10
+      T_m: 384
+      T_out: 8
+  weight_pattern: []

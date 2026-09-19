@@ -1,0 +1,59 @@
+[PolyFuse] Starting — objective: energy
+[PolyFuse] Arch: /app/Examples/AlexNet_Simba/simba_like/arch/simba_like.yaml
+[PolyFuse] Parsed 5 layers. GlobalBuffer: 65536 words
+[Stage1Tiler] GlobalBuffer: 65536 words (128.0 KB)
+[Stage1Tiler] PEInputBuffer: 8192 words/PE, PEWeightBuffer: 32768 words/PE, PEAccuBuffer: 1024 words/PE
+[Stage1Tiler] PE array: 16 PEs x 64 MACs/PE
+[PolyFuse] Running DP Partitioner...
+[PolyFuse] Evaluating block [0] with LoopTree...
+[PolyFuse] Block [0] energy: 3.5386e+08 pJ
+[PolyFuse] Evaluating block [1] with LoopTree...
+[PolyFuse] Block [1] energy: 9.2474e+08 pJ
+[PolyFuse] Evaluating block [2] with LoopTree...
+[PolyFuse] Block [2] energy: 8.8092e+08 pJ
+[PolyFuse] Evaluating block [3] with LoopTree...
+[PolyFuse] Block [3] energy: 6.9054e+08 pJ
+[PolyFuse] Evaluating block [4] with LoopTree...
+[PolyFuse] Block [4] energy: 1.0191e+09 pJ
+[PolyFuse] Optimal partition: 5 stack(s).
+[PolyFuse] Evaluating Naive (layer-by-layer) baseline with LoopTree...
+[PolyFuse] Evaluating DeepFrack heuristic baseline with LoopTree...
+[PolyFuse] DeepFrack: fusing all layers infeasible — using layer-by-layer (same as naive).
+
+=================================================================
+  PolyFuse V2 — End-to-End Energy Comparison Report
+=================================================================
+  Network  : /app/Examples/AlexNet_Simba/AlexNet/
+  Arch     : simba_like.yaml  (identical for ALL baselines)
+  Evaluator: LoopTree + Accelergy (real ERT from arch)
+  Objective: energy
+=================================================================
+  Method                                     Energy (pJ)    vs Naive
+  -----------------------------------------------------------------
+  Naive (layer-by-layer, tiled)            3869188648.00    baseline
+  DeepFrack (greedy fuse-all)              3869188648.00       1.00x
+  PolyFuse (optimal DP)                    3869188648.00       1.00x
+=================================================================
+
+  PolyFuse Optimal Partition:
+    Block 0: AlexNet_layer01
+      Energy (pJ) : 3.5386e+08
+      Tile sizes  : {'AlexNet_layer01': {'T_out': 3, 'T_in': 19, 'T_c': 3, 'T_m': 96}}
+      Wt cached   : []
+    Block 1: AlexNet_layer02
+      Energy (pJ) : 9.2474e+08
+      Tile sizes  : {'AlexNet_layer02': {'T_out': 2, 'T_in': 6, 'T_c': 96, 'T_m': 256}}
+      Wt cached   : []
+    Block 2: AlexNet_layer02New
+      Energy (pJ) : 8.8092e+08
+      Tile sizes  : {'AlexNet_layer02New': {'T_out': 2, 'T_in': 6, 'T_c': 96, 'T_m': 256}}
+      Wt cached   : []
+    Block 3: AlexNet_layer03
+      Energy (pJ) : 6.9054e+08
+      Tile sizes  : {'AlexNet_layer03': {'T_out': 1, 'T_in': 3, 'T_c': 256, 'T_m': 384}}
+      Wt cached   : []
+    Block 4: AlexNet_layer04
+      Energy (pJ) : 1.0191e+09
+      Tile sizes  : {'AlexNet_layer04': {'T_out': 1, 'T_in': 3, 'T_c': 384, 'T_m': 384}}
+      Wt cached   : []
+

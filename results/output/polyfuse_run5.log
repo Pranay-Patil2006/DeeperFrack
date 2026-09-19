@@ -1,0 +1,66 @@
+[PolyFuse] Starting — objective: energy
+[PolyFuse] Arch: /app/Examples/AlexNet_Simba/simba_like/arch/simba_like.yaml
+[PolyFuse] Parsed 5 layers. GlobalBuffer: 65536 words
+[Stage1Tiler] GlobalBuffer: 65536 words (128.0 KB)
+[Stage1Tiler] PEInputBuffer: 8192 words/PE, PEWeightBuffer: 32768 words/PE, PEAccuBuffer: 1024 words/PE
+[Stage1Tiler] PE array: 16 PEs x 64 MACs/PE
+[PolyFuse] Running DP Partitioner...
+[PolyFuse] Evaluating block [0] with LoopTree...
+[PolyFuse] Block [0] energy: 4.3309e+08 pJ
+[PolyFuse] Evaluating block [0, 1] with LoopTree...
+[PolyFuse] Block [0, 1] energy: 1.4722e+09 pJ
+[PolyFuse] Evaluating block [1] with LoopTree...
+[PolyFuse] Block [1] energy: 1.3073e+09 pJ
+[PolyFuse] Evaluating block [0, 1, 2] with LoopTree...
+[PolyFuse] Block [0, 1, 2] energy: 2.2454e+09 pJ
+[PolyFuse] Evaluating block [1, 2] with LoopTree...
+[PolyFuse] Block [1, 2] energy: 2.1803e+09 pJ
+[PolyFuse] Evaluating block [2] with LoopTree...
+[PolyFuse] Block [2] energy: 1.2468e+09 pJ
+[PolyFuse] Evaluating block [0, 1, 2, 3] with LoopTree...
+[PolyFuse] Block [0, 1, 2, 3] energy: 2.1591e+09 pJ
+[PolyFuse] Evaluating block [1, 2, 3] with LoopTree...
+[PolyFuse] Block [1, 2, 3] energy: 1.9660e+09 pJ
+[PolyFuse] Evaluating block [2, 3] with LoopTree...
+[PolyFuse] Block [2, 3] energy: 1.6674e+09 pJ
+[PolyFuse] Evaluating block [3] with LoopTree...
+[PolyFuse] Block [3] energy: 8.5781e+08 pJ
+[PolyFuse] Evaluating block [0, 1, 2, 3, 4] with LoopTree...
+[PolyFuse] Block [0, 1, 2, 3, 4] energy: 5.4978e+09 pJ
+[PolyFuse] Evaluating block [1, 2, 3, 4] with LoopTree...
+[PolyFuse] Block [1, 2, 3, 4] energy: 3.9152e+09 pJ
+[PolyFuse] Evaluating block [2, 3, 4] with LoopTree...
+[PolyFuse] Block [2, 3, 4] energy: 2.9292e+09 pJ
+[PolyFuse] Evaluating block [3, 4] with LoopTree...
+[PolyFuse] Block [3, 4] energy: 2.3325e+09 pJ
+[PolyFuse] Evaluating block [4] with LoopTree...
+[PolyFuse] Block [4] energy: 1.2580e+09 pJ
+[PolyFuse] Optimal partition: 2 stack(s).
+[PolyFuse] Evaluating Naive (layer-by-layer) baseline with LoopTree...
+[PolyFuse] Evaluating DeepFrack heuristic baseline with LoopTree...
+
+=================================================================
+  PolyFuse V2 — End-to-End Energy Comparison Report
+=================================================================
+  Network  : /app/Examples/AlexNet_Simba/AlexNet/
+  Arch     : simba_like.yaml  (identical for ALL baselines)
+  Evaluator: LoopTree + Accelergy (real ERT from arch)
+  Objective: energy
+=================================================================
+  Method                                     Energy (pJ)    vs Naive
+  -----------------------------------------------------------------
+  Naive (layer-by-layer, tiled)            5103025546.00    baseline
+  DeepFrack (greedy fuse-all)              5497816654.00       0.93x
+  PolyFuse (optimal DP)                    3417026958.00       1.49x
+=================================================================
+
+  PolyFuse Optimal Partition:
+    Block 0: AlexNet_layer01 -> AlexNet_layer02 -> AlexNet_layer02New -> AlexNet_layer03
+      Energy (pJ) : 2.1591e+09
+      Tile sizes  : {'AlexNet_layer03': {'T_out': 3, 'T_in': 5, 'T_c': 32, 'T_m': 113}, 'AlexNet_layer02New': {'T_out': 5, 'T_in': 9, 'T_c': 32, 'T_m': 40}, 'AlexNet_layer02': {'T_out': 9, 'T_in': 13, 'T_c': 48, 'T_m': 12}, 'AlexNet_layer01': {'T_out': 13, 'T_in': 59, 'T_c': 2, 'T_m': 6}}
+      Wt cached   : []
+    Block 1: AlexNet_layer04
+      Energy (pJ) : 1.2580e+09
+      Tile sizes  : {'AlexNet_layer04': {'T_out': 8, 'T_in': 10, 'T_c': 81, 'T_m': 16}}
+      Wt cached   : []
+

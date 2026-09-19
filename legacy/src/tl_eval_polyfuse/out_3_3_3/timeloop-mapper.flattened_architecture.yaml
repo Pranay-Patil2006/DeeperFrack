@@ -1,0 +1,121 @@
+architecture:
+    version: '0.4'
+    local:
+      - name: System.ws.PE[0..15].PEInputBuffer
+        class: storage
+        subclass: smartbuffer_SRAM
+        attributes:
+            memory_depth: 1024
+            memory_width: 128
+            word-bits: 16
+            cluster-size: 1
+            meshX: 16
+            datawidth: 16
+            technology: 45nm
+            latency: 0.5ns
+            global_cycle_seconds: 5e-10
+            n_rdwr_ports: 2
+            n_banks: 1
+            n_buffets: 1
+        area_scale: 1.0
+        energy_scale: 1.0
+      - name: System.ws.PE[0..15].PEWeightBuffer[0..7]
+        class: storage
+        subclass: smartbuffer_SRAM
+        attributes:
+            memory_depth: 512
+            memory_width: 128
+            word-bits: 16
+            meshX: 16
+            cluster-size: 1
+            n_banks: 1
+            datawidth: 16
+            technology: 45nm
+            latency: 0.5ns
+            global_cycle_seconds: 5e-10
+            n_rdwr_ports: 2
+            n_buffets: 1
+        area_scale: 1.0
+        energy_scale: 1.0
+      - name: System.ws.PE[0..15].PEAccuBuffer[0..7]
+        class: storage
+        subclass: smartbuffer_SRAM
+        attributes:
+            memory_depth: 64
+            memory_width: 64
+            cluster-size: 1
+            word-bits: 32
+            meshX: 16
+            datawidth: 16
+            technology: 45nm
+            latency: 0.5ns
+            global_cycle_seconds: 5e-10
+            n_rdwr_ports: 2
+            n_banks: 1
+            n_buffets: 1
+        area_scale: 1.0
+        energy_scale: 1.0
+      - name: System.ws.PE[0..15].PEWeightRegs[0..63]
+        class: storage
+        subclass: smartbuffer_SRAM
+        attributes:
+            memory_depth: 1
+            memory_width: 32
+            word-bits: 16
+            cluster-size: 1
+            num-ports: 2
+            meshX: 16
+            datawidth: 16
+            technology: 45nm
+            latency: 0.5ns
+            global_cycle_seconds: 5e-10
+            n_rdwr_ports: 2
+            n_banks: 1
+            n_buffets: 1
+        area_scale: 1.0
+        energy_scale: 1.0
+      - name: System.ws.PE[0..15].LMAC[0..63]
+        class: compute
+        subclass: lmac
+        attributes:
+            latency: 0.5ns
+            datawidth: 16
+            meshX: 16
+            word-bits: 16
+            technology: 45nm
+            global_cycle_seconds: 5e-10
+        area_scale: 1.0
+        energy_scale: 1.0
+      - name: System.ws.GlobalBuffer
+        class: storage
+        subclass: smartbuffer_SRAM
+        attributes:
+            memory_depth: 2048
+            memory_width: 512
+            word-bits: 16
+            cluster-size: 1
+            nports: 2
+            meshX: 1
+            datawidth: 16
+            technology: 45nm
+            latency: 0.5ns
+            global_cycle_seconds: 5e-10
+            n_rdwr_ports: 2
+            n_banks: 1
+            n_buffets: 1
+        area_scale: 1.0
+        energy_scale: 1.0
+      - name: System.DRAM
+        class: DRAM
+        attributes:
+            type: DDR4
+            width: 16
+            block-size: 1
+            word-bits: 16
+            shared_bandwidth: 6
+            datawidth: 16
+            technology: 45nm
+            latency: 0.5ns
+            global_cycle_seconds: 5e-10
+        area_scale: 1.0
+        energy_scale: 1.0

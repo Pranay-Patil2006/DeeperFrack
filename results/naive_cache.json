@@ -1,0 +1,76 @@
+{
+    "d2401764e6690722701a7b962573bacb": {
+        "total_energy": 5762310000.0,
+        "results": [
+            {
+                "energy_pJ": 651090000.0,
+                "cycles": 366025.0
+            },
+            {
+                "energy_pJ": 2688400000.0,
+                "cycles": 437400.0
+            },
+            {
+                "energy_pJ": 934280000.0,
+                "cycles": 167872.0
+            },
+            {
+                "energy_pJ": 1488540000.0,
+                "cycles": 318400.0
+            }
+        ]
+    },
+    "cd4fd93a9d896a0ffc2687c09a00249b": {
+        "total_energy": 17393811456.0,
+        "results": [
+            {
+                "energy_pJ": 130056192.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 2774532096.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 1387266048.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 2774532096.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 1387266048.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 2774532096.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 308281344.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 1387266048.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 2774532096.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 308281344.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 693633024.0,
+                "cycles": 0
+            },
+            {
+                "energy_pJ": 693633024.0,
+                "cycles": 0
+            }
+        ]
+    }
+}

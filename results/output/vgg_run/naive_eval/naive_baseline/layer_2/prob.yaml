@@ -1,0 +1,27 @@
+problem:
+  instance: {C: 64, M: 128, N: 1, P: 112, Q: 112, R: 3, S: 3}
+  shape:
+    data-spaces:
+    - name: Weights
+      projection:
+      - - [C]
+      - - [M]
+      - - [R]
+      - - [S]
+    - name: Inputs
+      projection:
+      - - [N]
+      - - [P]
+        - [R]
+      - - [Q]
+        - [S]
+      - - [C]
+    - name: Outputs
+      projection:
+      - - [N]
+      - - [P]
+      - - [Q]
+      - - [M]
+      read-write: true
+    dimensions: [C, M, R, S, P, Q, N]
+    name: CNN-Layer

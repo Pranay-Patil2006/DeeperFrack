@@ -1,0 +1,53 @@
+[PolyFuse] Starting — objective: energy
+[PolyFuse] Arch: /app/Examples/AlexNet_Simba/simba_like/arch/simba_like.yaml
+[PolyFuse] Parsed 5 layers. GlobalBuffer: 65536 words
+[Stage1Tiler] GlobalBuffer: 65536 words (128.0 KB)
+[Stage1Tiler] PEInputBuffer: 8192 words/PE, PEWeightBuffer: 32768 words/PE, PEAccuBuffer: 1024 words/PE
+[Stage1Tiler] PE array: 16 PEs x 64 MACs/PE
+[PolyFuse] Running DP Partitioner...
+[PolyFuse] Evaluating block [0] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [0] energy: inf pJ
+[PolyFuse] Evaluating block [0, 1] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [0, 1] energy: inf pJ
+[PolyFuse] Evaluating block [1] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [1] energy: inf pJ
+[PolyFuse] Evaluating block [0, 1, 2] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [0, 1, 2] energy: inf pJ
+[PolyFuse] Evaluating block [1, 2] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [1, 2] energy: inf pJ
+[PolyFuse] Evaluating block [2] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [2] energy: inf pJ
+[PolyFuse] Evaluating block [0, 1, 2, 3] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [0, 1, 2, 3] energy: inf pJ
+[PolyFuse] Evaluating block [1, 2, 3] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [1, 2, 3] energy: inf pJ
+[PolyFuse] Evaluating block [2, 3] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [2, 3] energy: inf pJ
+[PolyFuse] Evaluating block [3] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [3] energy: inf pJ
+[PolyFuse] Evaluating block [0, 1, 2, 3, 4] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [0, 1, 2, 3, 4] energy: inf pJ
+[PolyFuse] Evaluating block [1, 2, 3, 4] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [1, 2, 3, 4] energy: inf pJ
+[PolyFuse] Evaluating block [2, 3, 4] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [2, 3, 4] energy: inf pJ
+[PolyFuse] Evaluating block [3, 4] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [3, 4] energy: inf pJ
+[PolyFuse] Evaluating block [4] with LoopTree...
+[LoopTree Error] Worker failed: LOOPTREE_ERROR:map::at
+[PolyFuse] Block [4] energy: inf pJ
+Error: DP could not find a valid partition (all fusions infeasible).
